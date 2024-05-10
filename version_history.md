@@ -1,6 +1,7 @@
 # Version History
 
 ## 1.9
+Firefox, Chrome: 05/10/2024
 
 - Submission notifications now link to the submission rather than user profile
 - Changed profile links to /u/user to match recent LeetCode website refresh
