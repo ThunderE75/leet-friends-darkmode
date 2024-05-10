@@ -1,5 +1,13 @@
 # Version History
 
+## 1.9
+
+- Submission notifications now link to the submission rather than user profile
+- Changed profile links to /u/user to match recent LeetCode website refresh
+- Use userProfileUserQuestionProgressV2 query for question solved counts to create parity with the website counts
+- Allow '-' character to be used in usernames
+- Enter key can be used to add a friend
+
 ## 1.8
 Firefox, Chrome: 03/20/2024
 

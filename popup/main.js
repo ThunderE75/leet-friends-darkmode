@@ -25,7 +25,7 @@ const defaults = {
   "nickname": true,
   "pin_notify": true,
   "sort_method": "submitted",
-  "poll_time": "30000",
+  "poll_time": "120000",
   "show_daily": true,
   "badges": true,
   "daily_notifications": false
@@ -37,7 +37,6 @@ const required = {
 
 const emojis = {
   "10": "🔟",
-  "69": "😏",
   "100": "💯",
   "314": "🥧",
   "365": "📅",
@@ -47,7 +46,8 @@ const emojis = {
   "666": "😈",
   "777": "🍀",
   "1000": "🤓",
-  "1337": "💻"
+  "1337": "💻",
+  "2020": "👓"
 }
 
 let isSignedIn = false;
@@ -61,6 +61,12 @@ document.getElementById("add-button").addEventListener("click", () => add_friend
 document.getElementById("enter-settings").addEventListener("click", () => toggle_settings());
 document.getElementById("exit-settings").addEventListener("click", () => toggle_settings());
 document.getElementById("user-input").addEventListener("input", filterField);
+
+document.addEventListener('keypress', e => {
+    if (e.key === 'Enter' && settings_panel.classList.contains("hidden")) {
+      add_friend();
+    }
+});
 
 document.getElementById("enable-perms").addEventListener("click", () => {
   browser.permissions.request(required);
@@ -175,6 +181,21 @@ async function daily() {
   });
 }
 
+//test();
+async function test() {
+  let url = `https://leetcode.com/graphql/?query=query{
+  userProfileUserQuestionProgressV2(userSlug: "lee215") {
+    numAcceptedQuestions {
+      count
+      difficulty
+    }
+  }
+}`;
+  browser.runtime.sendMessage(url, data => {
+    console.log(data["userProfileUserQuestionProgressV2"]["numAcceptedQuestions"]);
+  });
+}
+
 // Retrieves a user's profile information
 async function get_user(username, callback = data => received_user(data)) {
   let url = `https://leetcode.com/graphql/?query=query{
@@ -211,6 +232,12 @@ async function get_user(username, callback = data => received_user(data)) {
   }
   recentSubmissionList(username: "${username}", limit: 1) {
       timestamp
+  }
+  userProfileUserQuestionProgressV2(userSlug: "${username}") {
+    numAcceptedQuestions {
+      count
+      difficulty
+    }
   }
 }`;
   browser.runtime.sendMessage(url, callback);
@@ -309,11 +336,12 @@ function received_user(data) {
 
 function filterField(e) {
   let t = e.target;
-  let badValues = /[^\w\d]/gi;
+  let badValues = /[^\w-]/gi;
   t.value = t.value.replace(badValues, '');
 }
 
 function add_friend() {
+  console.log("adding");
   let user = document.getElementById("user-input").value;
   if (user.length > 0) {
     if (friend_in_list(user)) {
@@ -466,7 +494,7 @@ function sort_friends() {
 
 // Remove all characters that are not letters or digits
 function sanitize(value) {
-  let badValues = /[^\w\d]/gi;
+  let badValues = /[^\w-]/gi;
   return String(value).replace(badValues, '');
 }
 
@@ -486,14 +514,28 @@ function create_friend_box(data) {
   }
   main_spinner.classList.add("hidden");
 
-  let points = sanitize(data["matchedUser"]["contributions"]["points"]);
+  let points = Number(data["matchedUser"]["contributions"]["points"]);
   let avatar = escape(data["matchedUser"]["profile"]["userAvatar"]);
-  let rank = parseInt(sanitize(data["matchedUser"]["profile"]["ranking"]), 10);
-  let ranking = rank.toLocaleString();
-  let all = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][0]["count"]);
-  let easy = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][1]["count"]);
-  let medium = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][2]["count"]);
-  let hard = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][3]["count"]);
+  let rank = Number(data["matchedUser"]["profile"]["ranking"]).toLocaleString();
+
+  let easy = 0;
+  let medium = 0;
+  let hard = 0;
+  for (let count of data["userProfileUserQuestionProgressV2"]["numAcceptedQuestions"]) {
+    switch (count["difficulty"]) {
+      case "EASY":
+        easy = Number(count["count"]);
+        break;
+      case "MEDIUM":
+        medium = Number(count["count"]);
+        break;
+      case "HARD":
+        hard = Number(count["count"]);
+        break;
+    }
+  }
+  let all = easy + medium + hard;
+
   let submission_percent = (data["matchedUser"]["submitStats"]["totalSubmissionNum"][0]["submissions"] == 0) ? 0 : Math.round(100 * data["matchedUser"]["submitStats"]["acSubmissionNum"][0]["submissions"] / data["matchedUser"]["submitStats"]["totalSubmissionNum"][0]["submissions"]);
   submission_percent = sanitize(submission_percent);
 
@@ -554,7 +596,7 @@ function create_friend_box(data) {
     <div class="badge-container ${settings["badges"] ? "" : "hidden"}"><img src="${badge_icon}" class="badge ${badge_icon.length == 0 ? "hidden" : ""}" alt="badge"/></div>
     <div class="east-of-avatar flex" id="eoa-${user}">
       <div class="flex user-row">
-        <h3><a target="_blank" href="https://leetcode.com/${user}" id="headline-${user}">${headline}</a></h3>
+        <h3><a target="_blank" href="https://leetcode.com/u/${user}/" id="headline-${user}">${headline}</a></h3>
         <p class="last-online">Submitted ${(days > -1) ? days : "∞"} ${(minutes) ? "Minute" : ((hours) ? "Hour" : "Day")}${(days == 1) ? "" : "s"} Ago</p>
         <div class="flex-fill">
           <button class="friend-button remove-button" id="rm-${user}">x</button>
@@ -563,7 +605,7 @@ function create_friend_box(data) {
         </div>
       </div>
       <div class="flex user-row">
-        <p>Rank: ${ranking} <span class="stars ${settings["stars"] ? "" : "hidden"}">${stars}</span></p>
+        <p>Rank: ${rank} <span class="stars ${settings["stars"] ? "" : "hidden"}">${stars}</span></p>
         <div class="flex-fill">
           <p style="float:right;">🪙 ${points}</p>
         </div>

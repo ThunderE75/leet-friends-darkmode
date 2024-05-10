@@ -8,7 +8,7 @@ let last_submission_time = {};
 let question_cache = {};
 
 let notification_counter = 0;
-const default_poll_time = "30000";
+const default_poll_time = "120000";
 
 const minute = 1000 * 60;
 const hour = minute * 60;
@@ -39,6 +39,7 @@ function keep_alive() {
 async function check_last_submission(username, aliases) {
   let url = `https://leetcode.com/graphql/?query=query{
     recentSubmissionList(username: "${username}", limit: 1) {
+        id
         title
         titleSlug
         timestamp
@@ -68,7 +69,7 @@ async function check_last_submission(username, aliases) {
       }
 
       notification_counter += 1;
-      browser.notifications.create("https://leetcode.com/" + username + "^^" + notification_counter, {
+      browser.notifications.create("https://leetcode.com/submissions/detail/" + submission["id"] + "/^^" + notification_counter, {
         type: "basic",
         iconUrl: "../images/lf_logo.png",
         title,
