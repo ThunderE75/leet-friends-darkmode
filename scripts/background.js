@@ -170,7 +170,6 @@ async function get_daily() {
 
     let daily_notifications = settings["daily_notifications"] ?? false;
     if (signed_in && daily_notifications && data["userStatus"] != "Finish") {
-      console.log("notifying");
       browser.notifications.create("https://leetcode.com" + link + "^^" + notification_counter, {
         type: "basic",
         iconUrl: "../images/lf_logo.png",

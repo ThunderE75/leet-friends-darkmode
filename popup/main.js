@@ -1,13 +1,10 @@
 "use strict";
 
-// TODO
-// Notifications for daily
-
 if (typeof browser == "undefined") {
   globalThis.browser = chrome;
 }
 
-const version = "1.8";
+const version = "1.9";
 const checkbox_settings = ["easter_eggs", "stars", "nickname", "pin_notify", "show_daily", "badges", "daily_notifications"];
 const value_settings = ["sort_method", "poll_time"];
 
@@ -181,21 +178,6 @@ async function daily() {
   });
 }
 
-//test();
-async function test() {
-  let url = `https://leetcode.com/graphql/?query=query{
-  userProfileUserQuestionProgressV2(userSlug: "lee215") {
-    numAcceptedQuestions {
-      count
-      difficulty
-    }
-  }
-}`;
-  browser.runtime.sendMessage(url, data => {
-    console.log(data["userProfileUserQuestionProgressV2"]["numAcceptedQuestions"]);
-  });
-}
-
 // Retrieves a user's profile information
 async function get_user(username, callback = data => received_user(data)) {
   let url = `https://leetcode.com/graphql/?query=query{
@@ -341,7 +323,6 @@ function filterField(e) {
 }
 
 function add_friend() {
-  console.log("adding");
   let user = document.getElementById("user-input").value;
   if (user.length > 0) {
     if (friend_in_list(user)) {
