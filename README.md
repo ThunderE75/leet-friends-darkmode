@@ -1,4 +1,16 @@
-# LeetFriends
+# LeetFriends Dark
+
+> This is a fork of [ericanderson2/leet-friends](https://github.com/ericanderson2/leet-friends), just modified for Dark mode & some updated icons.
+
+## Future Scope
+
+- Add a toggle to switch between Light & Dark modes
+- Refactor [syles.css](./popup/style.css) to remove redundancies
+- More coherent color scheme.
+
+
+---
+> Below is the unchanged README from [ericanderson2/leet-friends](https://github.com/ericanderson2/leet-friends)
 
 LeetFriends is a browser extension that allows you to add "friends" on LeetCode. LeetFriends functions as more of a "following" list, since the users you add will not be notified, nor do they have to add you back.
 

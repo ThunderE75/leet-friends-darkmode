@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css"/>
-    <title>LeetFriends</title>
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css" />
+  <title>LeetFriends Dark</title>
+</head>
 
 <body>
   <div id="popup-content">
-    <div id="header" class="flex">
-      <img src="../images/lf_logo.png" alt="leet friends logo"/>
-      <h1>LeetFriends</h1>
+    <div id="header" class="flex title">
+      <img class="header-icon" src="../images/lf_logo.png" alt="leet friends logo" />
+      <h1>LeetFriends Dark</h1>
       <a id="daily-link" href="#" class="hidden">
-        <img id="daily-image" src="../images/daily_incomplete.png" alt="daily"/>
+        <img id="daily-image" src="../images/daily_incomplete.png" alt="daily" />
       </a>
       <div class="flex-fill">
         <div id="header-info">
           <div id="settings-button" class="flex">
-            <p>v1.9</p>
-            <button id="enter-settings" class="friend-button edit-button">⚙</button>
+            <p>v2.0</p>
+            <button id="enter-settings" class="setting-button">
+              <img class="settings-icon" src="../images/dark_svg/setting-white.svg" alt="Settings" />
+            </button>
           </div>
-          <p><a target="_blank" href="https://github.com/ericanderson2/leet-friends/blob/main/version_history.md">What's New?</a></p>
+          <p><a target="_blank"
+              href="https://github.com/ThunderE75/leet-friends-darkmode/blob/main/version_history.md">What's New?</a>
+          </p>
         </div>
       </div>
     </div>
@@ -86,6 +91,11 @@
         </div>
         <h3 style="margin-bottom: 20px;">Display</h3>
         <ul>
+          <!-- Soon -->
+          <!-- <li>
+            <input type="checkbox" id="dark_mode" checked />
+            <label for="dark_mode"> Enable dark mode</label>
+          </li> -->
           <li>
             <input type="checkbox" id="easter_eggs" checked />
             <label for="easter_eggs"> Emoji easter eggs</label>
@@ -112,9 +122,9 @@
           <li>
             <label for="sort_method">Sort by:</label>
             <select id="sort_method">
-             <option value="username">Username</option>
-             <option value="submitted">Last submitted</option>
-             <option value="rank">Rank</option>
+              <option value="username">Username</option>
+              <option value="submitted">Last submitted</option>
+              <option value="rank">Rank</option>
             </select>
           </li>
           <li>
@@ -127,10 +137,12 @@
           <li>
             <label for="poll_time">Poll every:</label>
             <select id="poll_time">
-             <option value="30000">30 seconds</option>
-             <option value="60000">1 minute</option>
-             <option value="120000">2 minutes</option>
-             <option value="300000">5 minutes</option>
+              <option value="30000">30 seconds</option>
+              <option value="60000">1 minute</option>
+              <option value="120000">2 minutes</option>
+              <option value="300000">5 minutes</option>
+              <option value="1800000">30 minutes</option>
+              <option value="3600000">1 hour</option>
             </select>
           </li>
           <li>
@@ -153,10 +165,10 @@
       <div class="flex flex-fill">
         <div class="tiny-box">
           <a class="tiny-button" target="_blank" href="https://github.com/ericanderson2/leet-friends/issues">
-            <img class="tiny-img" src="../images/bug.png" alt="bug" />
+            <img class="tiny-img" src="../images/bug.svg" alt="bug" />
           </a>
           <a class="tiny-button" target="_blank" href="https://github.com/ericanderson2/leet-friends">
-            <img class="tiny-img" src="../images/github-mark.png" alt="github logo" />
+            <img class="tiny-img" src="../images/dark_svg/github-mark-white.svg" alt="github logo" />
           </a>
         </div>
       </div>
@@ -165,7 +177,8 @@
   </div>
 
   <div id="error-content" class="hidden">
-    <p>Can't show popup on this web page.</p><p>Try a different page.</p>
+    <p>Can't show popup on this web page.</p>
+    <p>Try a different page.</p>
   </div>
   <script type="text/javascript" src="main.js"></script>
 </body>

@@ -1,5 +1,14 @@
 # Version History
 
+## 2.0
+Firefox, Chrome: 31/01/2025
+
+- Added more options for poll entry
+- Updated the stylesheet for dark mode
+- Added icons for dark mode
+- Updated some icons
+
+
 ## 1.9
 Firefox, Chrome: 05/10/2024
 
